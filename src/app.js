@@ -11,7 +11,6 @@ app.use(express.static(path.resolve("src/public")));
 app.use(express.static(path.resolve("node_modules/bootstrap/dist")));
 
 
-// configure
 nunjucks.configure(path.resolve('src/public/views'),{
     express:app,
     autoscape:true,
@@ -38,7 +37,6 @@ app.get("/contact",(req,res)=>{
 });
 
 
-/* wild card handler */
 app.get('/*splat',(req,res)=>{
     res.status(404).render("error.html",{ title:"Page Not Found" });
 });
