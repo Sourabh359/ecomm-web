@@ -1,6 +1,8 @@
 import express from "express";
 import path from "node:path";
 import nunjucks from "nunjucks";
+import router from "./routes/api.js";
+import mongoose from "./dao.js";
 
 
 const app=express();
@@ -9,11 +11,12 @@ const port=process.env.PORT || 8080;
 
 app.use(express.static(path.resolve("src/public")));
 app.use(express.static(path.resolve("node_modules/bootstrap/dist")));
+app.use("/api",router);
 
 
 nunjucks.configure(path.resolve('src/public/views'),{
     express:app,
-    autoscape:true,
+     autoescape:true,
     noCache:false,
     watch:true
 }); 
