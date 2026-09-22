@@ -35,7 +35,7 @@ body{ font: 16px var(--ff);}
 .align-center{ align-items: center;}
 .img-resp{ max-width: 100%; height: auto;}
 .text-center{ text-align: center;}
-
+.float-end{float:right;}
 
 /* layout */
 .topnav{ line-height: 48px; background: #000; color: #fff; }
@@ -165,7 +165,16 @@ footer form button{ position: absolute; right: 17px; top: 50%; transform: transl
 .breadcrumb li:not(:first-child)::before{  content: '/'; }
 .breadcrumb a{ color: inherit; display: inline-block; padding: 0 10px;}
 
+/* search */
 
+.card{ padding: 1rem; box-shadow: 0 0 10px gray; }
+.card::after{ content: ''; display: table; clear: both;}
+.card .searchproduct{ color: inherit; }
+
+
+/* product */
+
+.single-product p{  margin: 1rem 0;}
 
 @media screen and (max-width:980px){
     .col-t-1{ grid-column: span 1;}

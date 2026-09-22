@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 $(function () {
 
@@ -96,14 +97,24 @@ $(function () {
      setInterval(saleTime, 1000);
 
 
-     $("header form").on("submit", function (e) {
-          e.preventDefault();
-          const item = $(this).find("product").val();
+     $("header form input").on("input", function () {
+          const item = $(this).val();
+          const searchList = $("header #searchlist");
 
-          fetch(`/api/search?product=${item}`).then(i => i.json()).then(i => console.log(i)).catch(e => console.warn(e));
+          searchList.empty();
 
+          if (typeof item==="string" && item.length >= 3) {
+               fetch(`/api/search?product=${item}`)
+                    .then(res => res.json())
+                    .then(data => {
 
+                         data.forEach((elem,ind )=> {
+                              searchList.append($('<option>').text(elem.name));
+                         });
+
+                    })
+                    .catch(error => console.warn(error));
+          }
      });
-
 
 });

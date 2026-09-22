@@ -4,7 +4,6 @@ import Product from "../models/Product.js";
 
 
 router.get('/', (req, res) => {
-    console.log("api");
     res.status(200).send("api");
 });
 
