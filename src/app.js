@@ -36,22 +36,32 @@ app.get("/about", (req, res) => {
      });
 });
 
-app.get("/search", (req, res) => {
-     const item = req.query;
-     const product = typeof item.product === "string" ? item.product : "";
-     console.log(item.product);
 
-     Product.find({ name: new RegExp(product) }).select("-_id")
-          .then(results => {
-               res.status(200).render("search.html", { items: results });
+app.get("/search", async (req, res) => {
+     const product = typeof req.query.product === "string"
+          ? req.query.product.trim()
+          : "";
+
+     try {
+          const results = await Product.find({
+               name: new RegExp(product, "i")
           })
-          .catch(err => {
-               res.status(200).render("search.html", { error: err });
+          .select("-_id")
+          .lean();
+
+          return res.render("search.html", {
+               title: "Search Results",
+               items: results
           });
 
+     } catch (err) {
 
+          return res.status(500).render("search.html", {
+               title: "Search",
+               items: []
+          });
+     }
 });
-
 
 app.get("/contact", (req, res) => {
      res.status(200).render("contact.html", { title: "Contact US" });

@@ -103,12 +103,12 @@ $(function () {
 
           searchList.empty();
 
-          if (typeof item==="string" && item.length >= 3) {
+          if (typeof item === "string" && item.length >= 3) {
                fetch(`/api/search?product=${item}`)
                     .then(res => res.json())
                     .then(data => {
 
-                         data.forEach((elem,ind )=> {
+                         data.forEach((elem, ind) => {
                               searchList.append($('<option>').text(elem.name));
                          });
 
@@ -116,5 +116,52 @@ $(function () {
                     .catch(error => console.warn(error));
           }
      });
+
+     async function categoryApi() {
+          const x = await fetch("/api/category");
+          const y = await x.json();
+          y.forEach((elem, ind) => {
+               $(".catapi").append(`<div class="col-2 col-t-4 col-p-6"><a href="${elem.slug}" class="cat-item">
+                                   <img src="img/category-computer.svg" alt="${elem.slug}" width="56" height="56" loading="lazy" class="img-resp"><h3>${elem.name}</h3></a></div>`)
+          });
+     }
+
+     categoryApi();
+
+     // productsapi
+
+     async function productsApi() {
+          const x = await fetch("/api/products");
+          const y = await x.json();
+
+          y.forEach((elem, ind) => {
+               $(".productsapi").append(`<div class="col-3">
+                              <section class="product-sm">
+                                   <div class="product-img">
+                                        <div class="discount">-${elem.discount}%</div>
+                                        <div class="wishlist"><a href="" class="fa-regular fa-heart"></a></div>
+                                        <div class="preview"><a href="" class="fa-regular fa-eye"></a></div>
+                                        <img src="${elem.img.thumb}" alt="${elem.name}" width="172" height="152" loading="lazy" class="img-resp">
+                                        <a class="addtocart" href="">Add To Cart</a>
+                                   </div>
+                                   <div class="product-desc">
+                                        <h3>${elem.name}</h3>
+                                        <p class="price">${elem.mrp - (elem.mrp * elem.discount / 100)} <del>${elem.mrp}</del></p>
+                                        <p class="rating">
+                                             <span class="star-full">&starf;</span>
+                                             <span class="star-full">&starf;</span>
+                                             <span class="star-full">&starf;</span>
+                                             <span class="star-full">&starf;</span>
+                                             <span class="star">&starf;</span>
+                                             <b>${elem.ratings}</b>
+                                        </p>
+                                   </div>
+                              </section>
+                         </div>`)
+          })
+     }
+
+     productsApi();
+
 
 });
