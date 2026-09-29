@@ -5,6 +5,7 @@ import mongoose from "./dao.js";
 import apiRouter from "./routes/api.js";
 import productRouter from "./routes/product.js";
 import Product from "./models/Product.js";
+import Category from "./models/Category.js";
 
 
 
@@ -36,6 +37,15 @@ app.get("/about", (req, res) => {
      });
 });
 
+app.get("/contact", (req, res) => {
+     res.status(200).render("contact.html", { title: "Contact US" });
+});
+
+app.get("/signup", (req, res) => {
+     res.status(200).render("signup.html", {
+          title: "signup",
+     });
+});
 
 app.get("/search", async (req, res) => {
      const product = typeof req.query.product === "string"
@@ -63,8 +73,23 @@ app.get("/search", async (req, res) => {
      }
 });
 
-app.get("/contact", (req, res) => {
-     res.status(200).render("contact.html", { title: "Contact US" });
+app.get("/:cat", async (req, res) => {
+     const category = await Category.findOne({ slug: req.params.cat });
+
+     if (!category) {
+          return res.status(404).render("error.html", { title: "Page Not Found" });
+     }
+
+     try {
+          const products = await Product.find({ category: category._id })
+               .populate("category")
+               .select("-_id")
+               .lean();
+
+          return res.status(200).render("category.html", { title: "Category", data: products });
+     } catch (err) {
+          return res.status(500).render("error.html", { title: "No Product Found" });
+     }
 });
 
 

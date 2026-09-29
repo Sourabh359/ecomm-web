@@ -8,6 +8,10 @@ const ProductSchema = new Schema({
     discount: { type: Number, required: false, min: 0, max: 100 },
     ratings: { type: Number, required: true, min: 0, max: 5 },
     img:Object,
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category"
+    }
 }, { collection: "product" });
 
 const Product = mongoose.model("Product", ProductSchema);

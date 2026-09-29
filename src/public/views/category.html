@@ -3,7 +3,7 @@
 <head>
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>{{title}}</title>
+     <title>{{data.name}} category</title>
      <link rel="stylesheet" href="/css/style.css">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
@@ -18,8 +18,20 @@
                          <li><a href="/products">products</a>
                     </ol>
                </nav>
-              <h1>{{title | title}}</h1>
+              <h1 class=" category">{{ title }}</h1>
 
+              <div class="row">
+                {% for i in data %}   
+                    <div class="col-4 col-t-6 col-p-12">
+                         <div class="card">
+                              <a href="/products/{{i.name | replace(' ','-')}}">
+                                   <h2>{{ i.name | title }}</h2>
+                              </a>
+                         </div>
+                    </div>
+                {% endfor %}    
+              </div>
+            
           </div>
      </main>
      {% include "footer.html" %}

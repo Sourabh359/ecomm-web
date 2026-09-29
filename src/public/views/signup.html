@@ -19,30 +19,10 @@
             <nav class="breadcrumb">
                 <ol class="flex">
                     <li><a href="/">Home</a></li>
-                    <li>Search</li>
+                    <li><a href="/signup">Signup</a>
                 </ol>
             </nav>
-            <h1 class="search-h1">{{title}}</h1>
-
-            <p>{{message}}</p>
-
-            <div class="row">
-                {% for i in items %}
-                <div class="col-6 col-m-12">
-                    <div class="card">
-                        <a class="searchproduct" href="/products/{{i.name | replace(' ','-')}}">
-                            <img class="float-end" src="/{{i.img.thumb}}" alt="{{i.name}}" width="200" height="200">
-                            <h2>{{i.name | title}}</h2>
-                            <p>Sellimg Price: {{ i.mrp - (i.mrp*i.discount/100) }} </p>
-                            <p>MRP: {{i.mrp}} </p>
-                            <p>Discount {{ i.discount }}% </p>
-                            <p>Ratings: {{i.ratings}}</p>
-                        </a>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-
+            <h1>{{title | title}}</h1>
         </div>
     </main>
 

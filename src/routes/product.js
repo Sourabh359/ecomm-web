@@ -11,7 +11,7 @@ router.get('/:pname',(req,res)=>{
      
      const item=req.params.pname.replaceAll("-"," ");
 
-      Product.find({name:item}).select("-_id")
+      Product.find({name:item}).populate("category","name").select("-_id")
           .then(results=>{
                console.log( results);  
                //  return res.status(200).json(results);
