@@ -6,11 +6,17 @@ import apiRouter from "./routes/api.js";
 import productRouter from "./routes/product.js";
 import Product from "./models/Product.js";
 import Category from "./models/Category.js";
+import jwt from "jsonwebtoken";
+import authenticate from "./jwtauth.js";
 
 
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const port = process.env.PORT || 8080;
+const jwtSecret = process.env.JWT_SECRET || "dev-secret";
 
 
 app.use(express.static(path.resolve("src/public")));
@@ -71,6 +77,45 @@ app.get("/search", async (req, res) => {
                items: []
           });
      }
+});
+
+app.get("/admin",(req,res)=>{
+     res.status(404).render("admin.html",{ title:"Hello Admin" });
+});
+
+app.post("/admin",(req,res)=>{
+
+      const { email, pass } = req.body;
+
+      if( email=="a@b" && pass==123456){
+          const token=jwt.sign({
+                id: 1,
+                email,
+                role: 'Admin'
+            },
+             jwtSecret ,
+             {
+                expiresIn: '1h'
+            }
+          );
+
+          res.cookie("token", token, {
+               httpOnly: true,
+               sameSite: "lax",
+               maxAge: 60 * 60 * 1000
+          });
+
+          // return res.json({message: 'Login Successful',token});
+          // return res.status(200).json({message:"success",token, decode:jwt.verify(token,process.env.JWT_SECRET)});
+          return res.status(200).render('add.html',{title:"Add Products",message:"success",token, decode:jwt.verify(token,jwtSecret)});
+      }
+
+      res.status(401).json({ message: 'Invalid Email or Password'});
+     //  res.status(404).render("admin.html",{ title:"Hello Admin" });
+});
+
+app.get("/add", authenticate ,(req,res)=>{
+     res.status(404).render("add.html",{ title:"Add Products" });
 });
 
 app.get("/:cat", async (req, res) => {
