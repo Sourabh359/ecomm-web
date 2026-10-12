@@ -22,9 +22,15 @@
               
                          <form action="/admin" method="post">
                               <div class="row">
-                                   <div class="col-4"><label>Email: <input type="email" name="email" required></label></div>
-                                   <div class="col-4"><label>Password: <input type="password" name="pass" required></label></div>
-                                   <div class="col-4"><button class="btn">Login</button></div>
+                                    <div class="col-3"><label>Username: <input value="avi" class="input" type="name" name="username" required></label></div>
+                                   <div class="col-3"><label>Password: <input value="avi123" class="input" type="password" name="password" required></label></div>
+                                   <div class="col-3"><button class="btn btn-primary">Login</button></div>
+                                   <div class="col-3">
+                                        <p>{{msg}}</p>
+                                        <p>{{message}}</p>
+                                        <p>{{error}}</p>
+                                        <p>{{errorMessage}}</p>
+                                   </div>
                               </div> 
                          </form>
                     

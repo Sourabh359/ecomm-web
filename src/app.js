@@ -6,14 +6,39 @@ import apiRouter from "./routes/api.js";
 import productRouter from "./routes/product.js";
 import Product from "./models/Product.js";
 import Category from "./models/Category.js";
-import jwt from "jsonwebtoken";
-import authenticate from "./jwtauth.js";
+import Admin from "./models/Admin.js";
+import session from "express-session";
+import passport from "passport";
+import local from "passport-local";
+
+const LocalStrategy=local.Strategy;
 
 
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.set('trust proxy', 1); 
+app.use(session({
+    secret:"session",
+    resave:false,
+    saveUninitialized:true,
+    cookie:{secure:false}
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function (user, done) {
+    const userRecord = Array.isArray(user) ? user[0] : user;
+    done(null, userRecord?.id ?? userRecord?._id ?? null);
+});
+
+passport.deserializeUser(function (user, next) {
+    next(null, user);
+});
+
 
 const port = process.env.PORT || 8080;
 const jwtSecret = process.env.JWT_SECRET || "dev-secret";
@@ -31,6 +56,45 @@ nunjucks.configure(path.resolve('src/public/views'), {
      noCache: false,
      watch: true
 });
+
+passport.use( new LocalStrategy({ usernameField: 'username',passwordField:'password' },(username, password, done) => {
+
+      Admin.find({ username: username }).then(( user) => {      
+
+          if( user.length==0 ){
+          return done(null, { message: 'No user found!' });
+               }
+               else  if (user[0].password !== password) {
+                    return done(null, { message: 'Password is incorrect!' });
+               }
+               else{
+                    return done(null, user);
+               }
+       
+        return done(null, user);
+
+      });
+
+    }
+  ));
+
+/**
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ * @param {import("express").NextFunction} next
+ */
+function isAuthenticated(req, res, next) {
+      if (req.isAuthenticated()) {
+        res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+        next();
+      } else {
+        res.status(403).render('admin.html',{msg:"Forbidden"});
+      }
+  }
+
+  app.get("/add",isAuthenticated,(req,res)=>{
+     res.status(200).render("add.html");
+  })
 
 
 app.get("/", (req, res) => {
@@ -80,42 +144,44 @@ app.get("/search", async (req, res) => {
 });
 
 app.get("/admin",(req,res)=>{
-     res.status(404).render("admin.html",{ title:"Hello Admin" });
+     res.status(200).render("admin.html",{ title:"Hello Admin" });
 });
 
-app.post("/admin",(req,res)=>{
+app.post("/admin", (req, res, next) => {
+  /**
+   * @param {any} err
+   * @param {any} user
+   * @param {any} [info]
+   */
+  const handleLocalAuth = (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+    else if (!user) {
+      return res.render('admin.html', { errorMessage: info?.message ?? 'Invalid credentials', title:"Invalid Credentials" });
+    }
+    else {
+      //setting users in session
+      return req.logIn(user, function (loginErr) {
+        if (loginErr) {
+          return next(loginErr);
+        }
 
-      const { email, pass } = req.body;
+        return res.render('add.html', { name: user[0]?.username ?? user.username ?? 'Admin' });
+      });
+    }
+  };
 
-      if( email=="a@b" && pass==123456){
-          const token=jwt.sign({
-                id: 1,
-                email,
-                role: 'Admin'
-            },
-             jwtSecret ,
-             {
-                expiresIn: '1h'
-            }
-          );
-
-          res.cookie("token", token, {
-               httpOnly: true,
-               sameSite: "lax",
-               maxAge: 60 * 60 * 1000
-          });
-
-          // return res.json({message: 'Login Successful',token});
-          // return res.status(200).json({message:"success",token, decode:jwt.verify(token,process.env.JWT_SECRET)});
-          return res.status(200).render('add.html',{title:"Add Products",message:"success",token, decode:jwt.verify(token,jwtSecret)});
-      }
-
-      res.status(401).json({ message: 'Invalid Email or Password'});
-     //  res.status(404).render("admin.html",{ title:"Hello Admin" });
+  passport.authenticate('local', handleLocalAuth)(req, res, next);
 });
 
-app.get("/add", authenticate ,(req,res)=>{
-     res.status(404).render("add.html",{ title:"Add Products" });
+app.post('/logout', function(req, res, next){
+  req.logout(function(err) {
+    if (err) { return next(err); }
+     else{
+          res.status(200).render("admin.html",{title:"Logout"});
+     }
+  });
 });
 
 app.get("/:cat", async (req, res) => {
