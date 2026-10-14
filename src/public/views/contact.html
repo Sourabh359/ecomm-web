@@ -23,6 +23,25 @@
                     </ol>
                </nav>
                <h1>{{title | title}}</h1>
+               <div class="row contact-card">
+               <section class="contact-content col-6 col-p-12">
+                    <h2>We'd Love To Hear From You!</h2>
+                    <p>Have a question about our products or need help navigating our website? We're here to help. Send us a message using the contact form below, and let us know how we can assist you.</p>
+               </section>
+               <section class="contact-form col-6 col-p-12">
+                    <form class="row">
+                         <label class="col-6">Name:<input type="text" name="name" placeholder="Enter your name" ></label>
+                         <label class="col-6">Email:<input type="text" name="email" placeholder="Enter your email"></label>
+                         <label class="col-6">Subject:<input type="text" name="subject" placeholder="Enter subject"></label>
+                         <label class="col-6">Message:<textarea placeholder="Write your message here..."></textarea></label>
+                         <button class="col-12" type="button">Send Message</button>
+                    </form>
+               </section>
+               </div>
+               <section class="contact-content text-center">
+                    <h2>Thank You!</h2>
+                    <p>Thank you for visiting our store. We appreciate your feedback and interest in our products.</p>
+               </section>
           </div>
      </main>
      {%include "footer.html" %}

@@ -29,7 +29,7 @@
                               <h1>Category: {{product.category.name}}</h1>
                               <div class="content">
                                    <h2>{{ product.name | title}}</h2>
-                                   <p>Price: <del> {{product.mrp}}</del> <ins>  {{ product.mrp - (product.mrp*product.discount/100) }} </ins> </p>
+                                   <p>Price: <del> ₹{{product.mrp}}</del> <ins>  ₹{{ product.mrp - (product.mrp*product.discount/100) }} </ins> </p>
                                    <p>Discount: {{product.discount}}% </p>
                                    <p>Ratings:  {{product.ratings}} out of 5 </p>
                               </div>
