@@ -1,6 +1,7 @@
 import express from "express";
 import path from "node:path";
 import nunjucks from "nunjucks";
+import "dotenv/config";
 import mongoose from "./dao.js";
 import apiRouter from "./routes/api.js";
 import productRouter from "./routes/product.js";
