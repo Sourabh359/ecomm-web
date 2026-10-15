@@ -10,6 +10,7 @@ import Admin from "./models/Admin.js";
 import session from "express-session";
 import passport from "passport";
 import local from "passport-local";
+import rateLimit from "express-rate-limit";
 
 const LocalStrategy=local.Strategy;
 
@@ -41,13 +42,19 @@ passport.deserializeUser(function (user, next) {
 
 
 const port = process.env.PORT || 8080;
-const jwtSecret = process.env.JWT_SECRET || "dev-secret";
+// const jwtSecret = process.env.JWT_SECRET || "dev-secret";
 
+const limiter=rateLimit({
+     windowMs:15*60*1000,
+     max:50,
+     message:"Too many requests from this IP, please try again later."
+})
 
 app.use(express.static(path.resolve("src/public")));
 app.use(express.static(path.resolve("node_modules/bootstrap/dist")));
 app.use("/api", apiRouter);
 app.use("/products", productRouter);
+app.use(limiter);
 
 
 nunjucks.configure(path.resolve('src/public/views'), {
@@ -209,3 +216,5 @@ app.get('/*splat', (req, res) => {
 });
 
 app.listen(port, () => console.log(`App running at http://127.0.0.1:${port}`));
+
+export default app;

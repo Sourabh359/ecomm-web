@@ -8,25 +8,6 @@ router.get('/', (req, res) => {
     res.status(200).send("api");
 });
 
-// router.get('/search', (req, res) => {
-//     const item = req.query.product;
-
-//     if (typeof item !== "string") {
-//         return res.status(400).json({ "message": "product query parameter is required" });
-//     }
-
-//     Product.find({ name: new RegExp(item) }).select("-_id")
-//         .then(results => {
-//             if (results.length) {
-//                 return res.status(200).json(results);
-//             }
-//             res.status(200).json({ "message": "no product found" });
-//         })
-//         .catch(err => {
-//             console.warn(err)
-//         });
-
-// });
 
 router.get("/search", async (req, res) => {
      const product = typeof req.query.product === "string"
@@ -65,24 +46,7 @@ router.get("/search", async (req, res) => {
      }
 });
 
-// router.get('/category',(req,res)=>{
-//      const item=req.query.q;
 
-//     if (typeof item !== "string") {
-//         return res.status(400).json({ "message": "q query parameter is required" });
-//     }
-
-//      Category.find({slug:new RegExp(item)}).select("name slug -_id")
-//      .then(results=>{
-//          if(results.length){
-//            return res.status(200).json(results);
-//          }
-//          res.status(200).json({"message":"no category found"});
-//      })
-//      .catch(err=>{
-//           console.warn(err)
-//      });     
-// });
 
 router.get('/category', async (req, res) => {
      try {
@@ -109,24 +73,7 @@ router.get('/category', async (req, res) => {
      }
 });
 
-// router.get('/products',(req,res)=>{
-//      const item=req.query.q;
 
-//     if (typeof item !== "string") {
-//         return res.status(400).json({ "message": "q query parameter is required" });
-//     }
-
-//      Product.find({name:new RegExp(item)}).select("-_id")
-//      .then(results=>{
-//          if(results.length){
-//            return res.status(200).json(results);
-//          }
-//          res.status(200).json({"message":"no category found"});
-//      })
-//      .catch(err=>{
-//           console.warn(err)
-//      });     
-// });
 
 router.get('/products', async (req, res) => {
      try {
@@ -152,6 +99,7 @@ router.get('/products', async (req, res) => {
           });
      }
 });
+
 
 router.get('/:cat',async (req,res)=>{
      const item=req.params.cat;
