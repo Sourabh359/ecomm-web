@@ -42,7 +42,7 @@ passport.deserializeUser(function (user, next) {
 });
 
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 // const jwtSecret = process.env.JWT_SECRET || "dev-secret";
 
 const limiter=rateLimit({
