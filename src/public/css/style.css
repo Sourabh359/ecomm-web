@@ -429,7 +429,7 @@ main {
 .subheading p {
     padding-left: 36px;
     line-height: 40px;
-    color: #DB4444;
+    color: #C93636;
     font-size: 14px;
     font-weight: 600;
 }
@@ -555,7 +555,7 @@ h2 {
     position: absolute;
     left: 12px;
     top: 12px;
-    background: #DB4444;
+    background: #C93636;
     width: 55px;
     line-height: 26px;
     border-radius: 4px;
@@ -612,11 +612,11 @@ h2 {
 
 .product-desc .price {
     margin: 8px 0;
-    color: #DB4444
+    color: #C93636
 }
 
 .product-desc .price del {
-    color: #00000080;
+    color: #767676;
 }
 
 .product-desc .rating .star {
@@ -629,7 +629,7 @@ h2 {
 
 .view-all-products {
     display: block;
-    background: #DB4444;
+    background: #C93636;
     color: #fff;
     width: 234px;
     line-height: 56px;
@@ -666,7 +666,7 @@ h2 {
     display: block;
     width: 159px;
     line-height: 56px;
-    background: #DB4444;
+    background: #C93636;
     color: #fff;
     border-radius: 4px;
     text-align: center;
