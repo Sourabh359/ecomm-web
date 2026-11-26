@@ -6,7 +6,7 @@ A full-stack e-commerce web application built using Node.js, Express.js, MongoDB
 
 Visit the live website here:
 
-**[E-commerce Website](https://ecomm-web-siiv.onrender.com)**
+**[E-commerce Website](https://ecommerce-1yne.onrender.com/)**
 
 ## Features
 
